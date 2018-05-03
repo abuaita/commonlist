@@ -1,7 +1,3 @@
-input {
-     autocomplete: off;
-}
-
 iframe {
       display: none
 }
@@ -28,12 +24,12 @@ a {
 a:hover {
   text-decoration: underline;
 }
-    
+
     .container {
       width: 1000px;
       margin: 0 auto;
     }
-    
+
     #title img{
       width: 450px;
       padding: 50px;
@@ -71,7 +67,7 @@ a:hover {
       color: #fff;
       text-decoration: underline;
     }
-    
+
     #butt {
       font-family: basic-sans, sans-serif;
       font-size: 20px;
@@ -98,7 +94,7 @@ a:hover {
 	    text-decoration: none;
 	    display: inline-block;
     }
-    
+
     #swirly img{
       width: 100vw;
       position: fixed;
@@ -131,7 +127,7 @@ a:hover {
     #user_inputs button:hover {
       background-color: white;
     }
-    
+
     #already_registered {
       opacity: .7;
       font-size: 18px;
@@ -144,5 +140,3 @@ a:hover {
     #welcome{
       margin-left: 50px;
     }
-
-
