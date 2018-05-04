@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>Commonlist Profile </title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -13,7 +14,7 @@
       <div id="title"><img src="./assorted/commonlist4pt.png" alt="logo" /></div>
 
       <div id="welcome"><h2>Welcome to Commonlist, {{User}}! We're happy you're here. <br><br>
-        If it's your first time, import your spotify data using this link:</h2>
+        If it's your first time or you want to update your songs, import your spotify data using this link:</h2>
         <a href="/spotify_import" class="btn-spotify">Import Spotify Data</a><br>
         <h2>If not, search to find a friend and combine your music tastes!</h2>
         <br><br>
@@ -22,9 +23,14 @@
 	  		<input type="text" name="user" placeholder="Search.." />
 	  		<input type="submit" value="Submit"/>
 	  	</form>
-
-
       </div>
+    </div>
+    <div id="albumContainer">
+      <ul>
+        {{#albumCovers}}
+            <li><img src={{.}}></li>
+        {{/albumCovers}}
+    </ul>
     </div>
     <div id="swirly"><img src="./assorted/album-sine-wave.jpg" id="swirly_image" alt="bottom banner" /></div>
 

@@ -81,13 +81,37 @@ app.post('/returning_profile', function(request, response){
   console.log('-- Request received:', request.method, request.url);
   //var request = request.body;
   //TODO - access their data + validate w/ database
-  session.authenticateUser(request, response);
+  session.authenticateUser(request, response, logIn, toProfile);
 });
+function toProfile(response) {
+  response.redirect("./profile");
+}
+function logIn(id) {
+  loggedIn = true;
+  userID = id;
+}
 //already logged in/access profile page directly: go back to profile page or tell them not authorized:
 app.get('/profile', function(request, response){
+  console.log(loggedIn + " wooooot");
   console.log('-- Request received:', request.method, request.url);
   if(loggedIn){
-    response.render('./profile.html', {"root": __dirname, "User":userID});
+    db.User.findOne({"username": userID}, function(err, doc){
+      if(err){
+        console.error(err);
+      }
+      let tracks = doc.trackInfo;
+      let links = [];
+      for (let z = 0; z < tracks.length; z++) {
+        console.log(z);
+        links.push(tracks[z].albumcover);
+
+        if (z == tracks.length - 1) {
+          console.log(links);
+          response.render('./profile.html', {"root": __dirname, "User":userID, "albumCovers":links });
+        }
+      }
+
+    });
     //getUserPlaylists(userID);
   }
   else{
@@ -190,6 +214,7 @@ app.get('/import_playlists', function(request, response){
 	spotifyApi.getAudioFeaturesForTrack(data.body.items[i].track.id)
 	.then(function(data1) {
         var song = {};
+        song.albumcover = data.body.items[i].track.album.images[1].url;
         song.album = data.body.items[i].track.album.name;
         song.name = data.body.items[i].track.name;
         song.artist = data.body.items[i].track.album.artists[0].name;
@@ -200,9 +225,7 @@ app.get('/import_playlists', function(request, response){
          song.instrum = data1.body.instrumentalness;
          songInfo.push(song);
          if(songInfo.length===data.body.items.length - 1){
-           console.log("YEEEEEET");
-           console.log(userID);
-           db.User.findOneAndUpdate({"username": userID}, { "$addToSet": { "trackInfo": { "$each": songInfo } }}, function(err, doc){
+           db.User.findOneAndUpdate({"username": userID}, {"$addToSet": { "trackInfo": { "$each": songInfo }}}, function(err, doc){
              if(err){
                console.error(err);
              }
@@ -253,6 +276,7 @@ app.get('/logout', function(request, response){
   console.log('-- Request received:', request.method, request.url);
   response.status(200).type('html');
   loggedIn = false; //global auth variable (now logged out)
+  userID = '';
   response.redirect('/login');
 });
 

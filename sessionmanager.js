@@ -45,7 +45,7 @@ function saveUser(request, response) {
   }
 }
 
-function authenticateUser(request, response) {
+function authenticateUser(request, response, logIn, toProfile) {
   var info = request.body;
   db.User.findOne({username:info.user}, function (err, user) {
     if (user === null) {
@@ -54,10 +54,10 @@ function authenticateUser(request, response) {
     } else {
     if (err) return console.error(err);
     if (user.validPassword(info.ret_pw1)) {
-      userID = info.user;
-      console.log(userID);
-      loggedIn = true; //global auth variable
-      response.render('./profile.html', {"root": __dirname, "User":userID});
+      logIn(info.user);
+      //toProfile(response);
+      response.redirect("./profile");
+      //response.render('./profile.html', {"root": __dirname, "User":info.user});
       console.log("password matches");
     } else {
       response.render('./login.html', {"root": __dirname, "alert":"Username or password do not match"});
