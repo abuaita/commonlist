@@ -101,7 +101,9 @@ app.get('/profile', function(request, response){
       }
       let tracks = doc.trackInfo;
       let links = [];
+      console.log("REACHED 1");
       for (let z = 0; z < tracks.length; z++) {
+        console.log("REACHED 2");
         console.log(z);
         links.push(tracks[z].albumcover);
 
@@ -111,6 +113,10 @@ app.get('/profile', function(request, response){
         }
       }
 
+      if (!tracks.length){
+        response.render('./profile.html', {"root": __dirname, "User":userID, "albumCovers":links });
+      }
+      console.log("REACHED 3");
     });
     //getUserPlaylists(userID);
   }
