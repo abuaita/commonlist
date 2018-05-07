@@ -204,44 +204,58 @@ app.get('/import_playlists', function(request, response){
   //   console.log('Something went wrong!', err);
   // });
 
-  spotifyApi.getMySavedTracks({
-    limit : 50
-  })
-  .then(function(data) {
-    var songInfo = [];
-    for(let i = 0; i < data.body.items.length; i++){
-      // song.name = data.body.items[i].track.name;
-	spotifyApi.getAudioFeaturesForTrack(data.body.items[i].track.id)
-	.then(function(data1) {
-        var song = {};
-        song.albumcover = data.body.items[i].track.album.images[1].url;
-        song.album = data.body.items[i].track.album.name;
-        song.name = data.body.items[i].track.name;
-        song.artist = data.body.items[i].track.album.artists[0].name;
-        console.log(data.body.items[i].track.album.artists[0].name);
-        song.id =  data.body.items[i].track.id;
-         song.dance = data1.body.danceability;
-         song.loud = data1.body.loudness;
-         song.instrum = data1.body.instrumentalness;
-         songInfo.push(song);
-         if(songInfo.length===data.body.items.length - 1){
-           db.User.findOneAndUpdate({"username": userID}, {"$addToSet": { "trackInfo": { "$each": songInfo }}}, function(err, doc){
-             if(err){
-               console.error(err);
-             }
-             console.log(doc);
-           });
-           // { "$addToSet": { "trackInfo": { "$each": songInfo } }});
-           // console.log(JSON.stringify?)
-         }
-   	 }, function(err) {
-      	console.error(err);
-   	 });
-    }
+  var ct = 0;
+  let os = 0;
+  var intervalID = setInterval(function () {
 
-  }, function(err) {
-    console.log('Something went wrong!', err);
-  });
+    var itemsLength = 50;
+      spotifyApi.getMySavedTracks({
+        limit : 50,
+        offset: os
+      })
+      .then(function(data) {
+        os += 50;
+        var songInfo = [];
+        itemsLength =  data.body.items.length;
+        console.log("LENGTH " + itemsLength + " OFFSET " + os);
+        for(let i = 0; i < data.body.items.length; i++){
+          // song.name = data.body.items[i].track.name;
+     spotifyApi.getAudioFeaturesForTrack(data.body.items[i].track.id)
+     .then(function(data1) {
+            var song = {};
+            song.albumcover = data.body.items[i].track.album.images[1].url;
+            song.album = data.body.items[i].track.album.name;
+            song.name = data.body.items[i].track.name;
+            song.artist = data.body.items[i].track.album.artists[0].name;
+            song.id =  data.body.items[i].track.id;
+             song.dance = data1.body.danceability;
+             song.loud = data1.body.loudness;
+             song.instrum = data1.body.instrumentalness;
+             songInfo.push(song);
+             if(songInfo.length===data.body.items.length - 1){
+               db.User.findOneAndUpdate({"username": userID}, {"$addToSet": { "trackInfo": { "$each": songInfo }}}, function(err, doc){
+                 if(err){
+                   console.error(err);
+                 }
+                 console.log(doc);
+               });
+               // { "$addToSet": { "trackInfo": { "$each": songInfo } }});
+               // console.log(JSON.stringify?)
+             }
+          }, function(err) {
+           console.error(err);
+          });
+        }
+
+      }, function(err) {
+        console.log('Something went wrong!', err);
+      });
+      if (++ct === 10) {
+        console.log("STOPPED at " + ct);
+       clearInterval(intervalID);
+   }
+}, 10000);
+
 
   //TODO: GET SONGS FROM PLAYLISTS : spotifyApi.getPlaylistTracks()
 
