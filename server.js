@@ -314,28 +314,34 @@ app.get('/spotify_export', function(request, response){
   if (res===0){
     response.render('./postexport.html', {"root": __dirname, "User":userID, "Message":"Playlist successfully exported! Check spotify."});
   } else {
-    response.render('./postexport.html', {"root": __dirname, "User":userID, "Message":"There was an error exporting. You might need to re-authorize Commonlist's access to Spotify by re-importing your music tastes."});
+    response.render('./postexport.html', {"root": __dirname, "User":userID, "Message":"There was an error exporting to Spotify. You might need to re-authorize Commonlist's access to Spotify by re-importing your music tastes."});
   }
 });
 
 
+
 function exportPlaylist(id) {
 
-  //SAMPLE PLAYLIST FROM USER SEARCHED FOR
+  //PLAYLIST FROM USER SEARCHED FOR AND LOGGED IN USER
+
+  console.log(id)
+  console.log(userID)
+
+  var query = db.User.findOne({username: id}, function(err, obj) {
 
   var toExportUser1 = [];
   var toExportUser2 = [];
+  var listofAllIDs = [];
 
-  var query = db.User.findOne({username: id}, function(err, obj) {
     if (obj === null) {
       console.log("Could not find user");
       return 1;
     } else {
       for(let i=0; i<obj.trackInfo.length; i++){
         toExportUser1.push('spotify:track:' + obj.trackInfo[i].id);
+        listofAllIDs.push(obj.trackInfo[i].id);
       }
     }
-  });
 
 
   var query2 = db.User.findOne({username: userID}, function(err, obj) {
@@ -345,55 +351,124 @@ function exportPlaylist(id) {
     } else {
       for(let i=0; i<obj.trackInfo.length; i++){
         toExportUser2.push('spotify:track:' + obj.trackInfo[i].id);
+        listofAllIDs.push(obj.trackInfo[i].id);
       }
     }
+
+  //console.log(toExportUser1, toExportUser2, listofAllIDs);
+
+
+  combinedPlaylist = mixMusicTastesAlgorithm(toExportUser1, toExportUser2, listofAllIDs);
+
+
+   });
+
   });
 
-
-  combinedPlaylist = mixMusicTastesAlgorithm(toExportUser1, toExportUser2);
-
-  spotifyApi.createPlaylist(spotifyID, ('Commonlist Playlist ' + Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000), { 'public' : false })
-  .then(function(data) {
-    spotifyApi.addTracksToPlaylist(spotifyID, data.body.id, combinedPlaylist)
-    .then(function(data) {
-      console.log('Added tracks to playlist!');
-      return 0;
-    }, function(err) {
-      console.log('Something went wrong!', err);
-      return 1;
-    });
-  }, function(err) {
-    console.log('Something went wrong!', err);
-    return 1;
-  });
-
+return 0;
 }
 
 
 
-function mixMusicTastesAlgorithm(user1Music, user2Music){
-  combined = [];
+function mixMusicTastesAlgorithm(user1Music, user2Music, listofAllIDs){
 
-  songsInCommon = getSongsInCommon(user1Music, user2Music)
-
-  toGenerate = 50 - songsInCommon.length;
-
-  songsFromPrefAlgo = generateSongsInCommon(user1Music, user2Music, toGenerate);
-
-  combined = songsInCommon.concat(songsFromPrefAlgo); //should be 50 songs now (songs in common + from pref algo)
-
-  return combined;
+  getSongsInCommon(user1Music, user2Music, listofAllIDs); //finishes then calls generateSongsincommon
 
 }
 
-function generateSongsInCommon(user1Music, user2Music, numberToGen){
+function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs, songsInCommon){
   //TODO using Matt's algorithm: https://docs.google.com/document/d/1ISwg8G6iC-S01ga0BEv9PeduSrMQsPs8OXbtxAS-wCs/edit
+  console.log("We are generating songs in common now");
 
-  return []
+  let len = listofAllIDs.length;
+  if (len>100){
+    len=100;
+  }
+  var options = {
+      url: 'https://api.spotify.com/v1/audio-features/?ids=',
+      headers: { 'Authorization': 'Bearer ' + global_access_token },
+      json: true    };
+
+  for(let i=0; i<len; i++){
+    let cur = listofAllIDs[i] + ','
+    options.url += cur
+  }
+
+   // use the access token to access the Spotify API and get song data
+   //then get averages of danceability, energy, tempo, valence
+  request_library.get(options, function(error, response, body) {
+    let avg_danceability = 0, avg_energy = 0, avg_tempo = 0, avg_valence = 0;
+    for(let i=0; i<body.audio_features.length; i++){
+      avg_danceability += body.audio_features[i].danceability;
+      avg_energy += body.audio_features[i].energy;
+      avg_tempo += body.audio_features[i].tempo;
+      avg_valence += body.audio_features[i].valence;
+    }
+    avg_danceability = avg_danceability/(body.audio_features.length)
+    avg_energy = avg_energy/(body.audio_features.length)
+    avg_tempo = avg_tempo/(body.audio_features.length)
+    avg_valence = avg_valence/(body.audio_features.length)
+
+    //now pick a few random songs as SEED VALUES
+    songid1 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
+    songid2 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
+    songid3 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
+    songid4 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
+    songid5 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
+
+
+    var rec_options = {
+      url: 'https://api.spotify.com/v1/recommendations?',
+      headers: { 'Authorization': 'Bearer ' + global_access_token },
+      json: true    };
+
+    rec_options.url += 'seed_tracks=' + songid1 + ',' + songid2 + ',' + songid3 + ',' +songid4 + ',' +songid5;
+    rec_options.url += '&min_popularity=50&market=US';
+    rec_options.url += '&target_energy=' + avg_energy;
+    rec_options.url += '&target_valence=' + avg_valence;
+    rec_options.url += '&target_tempo=' + avg_tempo;
+    rec_options.url += '&target_danceability=' + avg_danceability;
+    rec_options.url += '&limit=' + numberToGen;
+
+    request_library.get(rec_options, function(error, response, body) {
+      generatedIDs = []
+      for(let h=0; h<body.tracks.length; h++){
+        generatedIDs.push('spotify:track:' + body.tracks[h].id);
+      }
+
+        combined = songsInCommon.concat(generatedIDs); //should be 50 songs now (songs in common + from pref algo)
+        console.log("combined: " +combined);
+
+        //NOW CREATE PLAYLIST:
+
+      spotifyApi.createPlaylist(spotifyID, ('Commonlist Playlist ' + Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000), { 'public' : false })
+      .then(function(data) {
+        spotifyApi.addTracksToPlaylist(spotifyID, data.body.id, combined)
+        .then(function(data) {
+          console.log('Added tracks to playlist!');
+          return 0;
+        }, function(err) {
+          console.log('Something went wrong!', err);
+          return 1;
+        });
+      }, function(err) {
+        console.log('Something went wrong!', err);
+      });
+
+
+    });
+
+
+  });
+
+
+
+
+
 }
 
 
-function getSongsInCommon(user1Music, user2Music){
+function getSongsInCommon(user1Music, user2Music, listofAllIDs){
   combined = [];
 
   for(let i=0; i<user1Music.length; i++){
@@ -404,7 +479,9 @@ function getSongsInCommon(user1Music, user2Music){
     }
   }
 
-  return combined;
+  let toGenerate = 50 - combined.length
+
+  return generateSongsInCommon(user1Music, user2Music, toGenerate, listofAllIDs, combined);
 }
 
 
