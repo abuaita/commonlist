@@ -363,7 +363,7 @@ function exportPlaylist(id) {
   //console.log(toExportUser1, toExportUser2, listofAllIDs);
 
 
-  combinedPlaylist = mixMusicTastesAlgorithm(toExportUser1, toExportUser2, listofAllIDs);
+  combinedPlaylist = mixMusicTastesAlgorithm(toExportUser1, toExportUser2, listofAllIDs, id, userID);
 
 
    });
@@ -375,13 +375,13 @@ return 0;
 
 
 
-function mixMusicTastesAlgorithm(user1Music, user2Music, listofAllIDs){
+function mixMusicTastesAlgorithm(user1Music, user2Music, listofAllIDs, id, userID){
 
-  getSongsInCommon(user1Music, user2Music, listofAllIDs); //finishes then calls generateSongsincommon
+  getSongsInCommon(user1Music, user2Music, listofAllIDs, id, userID); //finishes then calls generateSongsincommon
 
 }
 
-function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs, songsInCommon){
+function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs, songsInCommon, user1, user2){
   //TODO using Matt's algorithm: https://docs.google.com/document/d/1ISwg8G6iC-S01ga0BEv9PeduSrMQsPs8OXbtxAS-wCs/edit
   console.log("We are generating songs in common now");
 
@@ -446,7 +446,7 @@ function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs
 
         //NOW CREATE PLAYLIST:
 
-      spotifyApi.createPlaylist(spotifyID, ('Commonlist Playlist ' + Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000), { 'public' : false })
+      spotifyApi.createPlaylist(spotifyID, ('Commonlist: ' + user1 + ' & ' + user2 + ' #' + Math.floor(Math.random() * (100 - 30 + 1)) + 30), { 'public' : false })
       .then(function(data) {
         spotifyApi.addTracksToPlaylist(spotifyID, data.body.id, combined)
         .then(function(data) {
@@ -473,7 +473,7 @@ function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs
 }
 
 
-function getSongsInCommon(user1Music, user2Music, listofAllIDs){
+function getSongsInCommon(user1Music, user2Music, listofAllIDs, id, userID){
   combined = [];
 
   for(let i=0; i<user1Music.length; i++){
@@ -486,7 +486,7 @@ function getSongsInCommon(user1Music, user2Music, listofAllIDs){
 
   let toGenerate = 50 - combined.length
 
-  return generateSongsInCommon(user1Music, user2Music, toGenerate, listofAllIDs, combined);
+  return generateSongsInCommon(user1Music, user2Music, toGenerate, listofAllIDs, combined, id, userID);
 }
 
 
