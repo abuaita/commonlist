@@ -1,6 +1,6 @@
 var db = require('./database.js');
 
-function saveUser(request, response) {
+function saveUser(request, response, logIn) {
   var info = request.body; // the form data
   var user = db.makeUser(info.user, info.email);
   if (info.pw1 !== info.pw2) { // if the passwords do not match, alert the user
@@ -10,8 +10,9 @@ function saveUser(request, response) {
     // user.generateJWT(); -> returns a jwt
     // user.toAuthJSON(); -> returns a JSON representation
     user.save(function(err, data) { // save the user doc to the model
-      if (!err){ // if there are no errors, load the profile page
-        response.render('./profile', {"root": __dirname, "User":info.user});
+      if (!err){ // if there are no errors, load the profile
+        logIn(info.user);
+        response.render('./profile.html', {"root": __dirname, "User":info.user});
       } else {
         if (err.name === "ValidationError") { // if it is a validation error,
           // check for what it is and then send the appropriate alert to the user
@@ -38,7 +39,9 @@ function saveUser(request, response) {
               console.error(err);
             }
           }
-          response.render('./register', {"root": __dirname, "display": "unset", "alert":alert_message});
+          console.log("error: "+ err);
+          console.log("message: " + alert_message);
+          response.render('./register.html', {"root": __dirname, "alert":alert_message});
         }
       }
     });
