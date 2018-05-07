@@ -3,25 +3,25 @@
 <head>
   <meta charset="utf-8">
   <title>Commonlist</title>
+  <link rel="stylesheet" href="https://use.typekit.net/jjf2cbe.css">
   <link rel="stylesheet" href="styles.css" />
   <script type="text/javascript" src="mustache.js" ></script>
 </head>
 <body>
-
   <div class="container">
-    <div class="alert">
+    <div class="alert" style="display:{{display}}">
       <h3 id="alert_header" style="color:orangered">{{alert}}</h3>
     </div>
-    <div id="login_link"><h2><a href="/login">Login</a> &nbsp;&nbsp;&nbsp;&nbsp;  <a href="/register">Sign Up</a></h2></div>
+    <div id="login_link"><h2><a href="/login">Log in</a> &nbsp;&nbsp;&nbsp;&nbsp;  <a href="/register">Sign Up</a></h2></div>
     <div id="title"><a href="/"><img src="./assorted/commonlist4pt.png" alt="logo" /></a></div>
     <div id="user_inputs">
-      <h2>Welcome! Create an account:</h2>
+      <h1>Welcome! Create an account:</h1>
       <form method="post" action="/new_profile">
-        Email: <input id="email" type="text" name="email" autocomplete="off"> <br>
-        Username: <input id="user" type="text" name="user" autocomplete="off"> <br>
-        Password: <input id="pw1" type="password" name="pw1"> <br>
-        Confirm Password: <input id="pw2" type="password" name="pw2"> <br>
-        <button id="signup" type="submit"> Sign Up </button>
+        Email: <input type="text" name="email" autocomplete="off"> <br>
+        Username: <input type="text" name="user" autocomplete="off"> <br>
+        Password: <input type="password" name="pw1"> <br>
+        Confirm Password: <input type="password" name="pw2"> <br>
+        <button type="submit"> Sign Up </button>
       </form>
       <h2><span id="already_registered">(Already a user? Log In <a href="/login">here)</a></span></h2>
     </div>

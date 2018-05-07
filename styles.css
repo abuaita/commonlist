@@ -1,142 +1,213 @@
 iframe {
-      display: none
+  display: none
 }
-body {
-      background: #000;
-      color: #fff;
-      font-family: basic-sans, sans-serif;
-      font-style: normal;
-      font-weight: 200;
-    }
 
-h2 {
-  font-weight: 100;
+body {
+  background: #000;
+  color: #fff;
   font-family: basic-sans, sans-serif;
+  line-height: 1;
 }
 
 a {
   text-decoration: none;
-  font-style: normal;
-  font-weight: 200;
   color: inherit;
+}
+
+.spotify {
+  background-color: #1DB954;
+}
+
+.spotify img {
+  width: 20px;
+}
+
+.spotify:hover {
+  color: #1DB954;
+}
+
+button {
+  font-family: basic-sans, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  width: 300px;
+  background-color: black;
+  padding: 3px;
+  color: white;
+  border-radius: 20px;
+  border: 1px solid white;
+}
+
+button:hover {
+  color: black;
+  background-color: white;
+}
+
+#subtitle h3 {
+  margin: 30px 0px;
+  font-weight: 900;
+  font-size: 80px;
+  text-transform: uppercase;
+  font-style: italic;
 }
 
 a:hover {
   text-decoration: underline;
 }
 
-    .container {
-      width: 1000px;
-      margin: 0 auto;
-    }
+.container {
+  padding: 0px 10%;
+}
 
-    #title img{
-      width: 450px;
-      padding: 50px;
-    }
+#title img{
+  width: 450px;
+  padding: 50px 0px 10px 0px;
+}
 
-    #subtitle{
-      font-family: basic-sans, sans-serif;
-      transform: skew(-6deg);
-      font-weight: 900;
-      text-transform: Uppercase;
-      font-size: 55px;
-      margin-left: 50px;
-      width: 700px;
-      margin-top: -20px;
-    }
+#subtitle #user_inputs {
+  width: 80%
+}
 
-    #login_link{
-      margin-left: 780px;
-      position: fixed;
-      margin-top: 52px;
-      font-size: 14px;
-      opacity: .6;
-    }
+#alert_header {
+  font-size: 20px;
+  margin: 20px 0px 0px 0px;
+}
 
-    #login_link a {
-      font-weight: 100;
-      font-family: basic-sans, sans-serif;
-      color: #fff;
-      text-decoration: none;
-    }
+#login_link{
+  float: right;
+  font-size: 14px;
+  opacity: .6;
+  margin-top: 30px;
+}
 
-    #login_link a:hover {
-      font-weight: 100;
-      font-family: basic-sans, sans-serif;
-      color: #fff;
-      text-decoration: underline;
-    }
+#login_link a:hover {
+  text-decoration: underline;
+}
 
-    #butt {
-      font-family: basic-sans, sans-serif;
-      font-size: 20px;
-      border: 1px solid white;
-      background-color: black;
-      color: white;
-      border-radius: 20px;
-      margin-left: 50px;
-      margin-top: 20px;
-      width: 200px;
-    }
+#butt {
+  font-size: 25px;
+  width: 350px;
+}
 
-    #butt:hover {
-      background-color: white;
-    }
+#profile h1 {
+  margin: 0px;
+}
 
-    .btn-spotify {
-	    font-size: 20px;
-	    background-color: #1DB954;
-	    color: white;
-	    border-radius: 20px;
-	    margin-top: -10px;
-	    padding: 10px;
-	    text-decoration: none;
-	    display: inline-block;
-    }
+#profile h2 {
+  margin: 10px 0px 15px 0px;
+}
 
-    #swirly img{
-      width: 100vw;
-      position: fixed;
-    }
+.btn-spotify {
+  font-size: 20px;
+  background-color: #1DB954;
+  color: white;
+  border-radius: 20px;
+  margin-top: -10px;
+  padding: 10px;
+  text-decoration: none;
+  display: inline-block;
+}
 
-    #user_inputs {
-      margin-left: 70px;
-    }
+#swirly img{
+  width: 100vw;
+}
 
-    #user_inputs input {
-      border: none;
-      background: black;
-      border-bottom: 1px dashed #FFFFFF;
-      margin-bottom: 10px;
-      width: 140px;
-      color: #FFF;
-    }
+input {
+  border: none;
+  background: black;
+  border-bottom: 1px dashed #FFFFFF;
+  margin-bottom: 10px;
+  width: 140px;
+  color: #FFF;
+}
 
-    #user_inputs button {
-      font-family: basic-sans, sans-serif;
-      font-size: 15px;
-      border: 1px solid white;
-      background-color: black;
-      color: white;
-      border-radius: 20px;
-      margin-top: 10px;
-      width: 100px;
-    }
+#user_pics  {
+  margin-top: 50px;
+}
 
-    #user_inputs button:hover {
-      background-color: white;
-    }
+.user_image {
+  width: 100px;
+  border-radius: 10px;
+  float: left;
+}
 
-    #already_registered {
-      opacity: .7;
-      font-size: 18px;
-    }
+.albumContainer {
+  width: 568px;
+  margin-left: 150px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+}
 
-    #error{
-      margin-left: 50px;
-    }
+.albumContainer ul {
+  width: inherit;
+  margin: 0px;
+  padding: 0px;
+}
 
-    #welcome{
-      margin-left: 50px;
-    }
+.albumContainer li {
+  width: 60px;
+  list-style-type: none;
+  display: inline-block;
+  margin: 4px;
+}
+
+.albumContainer img {
+  list-style-type: none;
+  width: 60px;
+  border-radius: 5px;
+}
+
+#already_registered {
+  opacity: .7;
+  font-size: 18px;
+}
+
+#error{
+  margin-left: 50px;
+}
+
+#search {
+  margin-top: 20px;
+  margin: 40px 20% 0px 20%;
+  border: 3px solid white;
+  border-radius: 15px;
+}
+
+#search h1 {
+  text-align: center;
+  margin: 25px auto;
+}
+
+#search form {
+  margin: 30px auto;
+  text-align: center;
+}
+
+#results {
+  margin: 40px 0px 40px 0px;
+  text-align: center;
+}
+#results button{
+  width: 300px;
+}
+#user {
+  height: 100px;
+  width:auto;
+  display: inline-block;
+}
+
+#user img {
+  float: left;
+  width: 60px;
+}
+
+#user h2 {
+  font-size: 20px;
+  padding: 0px 40px;
+  float: right;
+}
+#export button {
+  margin: 10px;
+}

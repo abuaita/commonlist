@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Commonlist</title>
+  <link rel="stylesheet" href="https://use.typekit.net/jjf2cbe.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div id="login_link"><h2><a href="/profile">@{{User}}</a> &nbsp;&nbsp;&nbsp;&nbsp;  <a href="/logout">Log out</a></h2></div>
+    <div id="title"><a href="/"><img src="./assorted/commonlist4pt.png" alt="logo"/></a></div>
+    <div id="search">
+      <h1>Combine your taste with your friend!</h1>
+        <form action="/look_up_user" method="GET">
+          @<input type="text" name="user" placeholder=" ... " />
+          <br>
+          <button type="submit"/> Submit </button>
+        </form>
+    </div>
+    <div id="results">
+      <h3>{{Message}}</h3>
+      <br>
+      <div id="user"><img class="user_image" src="{{friend_image}}"/> <h2>@{{friend_username}}</h2></div>
+      <br>
+      <form method="GET" action="/make_commonlist" style="display:{{display}}">
+        <button type="submit"> Yes, Make the Commonlist! </button>
+      </form>
+    </div>
+  </div>
+  <div id="swirly"><img src="./assorted/album-sine-wave.jpg" id="swirly_image" alt="bottom banner"/></div>
+</body>
+</html>
