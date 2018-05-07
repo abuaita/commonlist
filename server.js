@@ -321,6 +321,8 @@ function exportPlaylist(id) {
         toExportUser1.push('spotify:track:' + obj.trackInfo[i].id);
       }
     }
+  });
+
 
   var query2 = db.User.findOne({username: userID}, function(err, obj) {
     if (obj === null) {
@@ -331,6 +333,7 @@ function exportPlaylist(id) {
         toExportUser2.push('spotify:track:' + obj.trackInfo[i].id);
       }
     }
+  });
 
 
   combinedPlaylist = mixMusicTastesAlgorithm(toExportUser1, toExportUser2);
@@ -350,9 +353,9 @@ function exportPlaylist(id) {
     return 1;
   });
 
-});
-
 }
+
+
 
 function mixMusicTastesAlgorithm(user1Music, user2Music){
   combined = [];
@@ -372,15 +375,15 @@ function mixMusicTastesAlgorithm(user1Music, user2Music){
 function generateSongsInCommon(user1Music, user2Music, numberToGen){
   //TODO using Matt's algorithm: https://docs.google.com/document/d/1ISwg8G6iC-S01ga0BEv9PeduSrMQsPs8OXbtxAS-wCs/edit
 
-  
+  return []
 }
 
 
 function getSongsInCommon(user1Music, user2Music){
   combined = [];
 
-  for(int i=0; i<user1Music.length; i++){
-    for(int j=0; j<user2Music.length; j++){
+  for(let i=0; i<user1Music.length; i++){
+    for(let j=0; j<user2Music.length; j++){
       if(user1Music[i] == user2Music[j]){
         combined.push(user1Music[i]);
       }
