@@ -207,7 +207,6 @@ app.get('/import_playlists', function(request, response){
   var ct = 0;
   let os = 0;
   var intervalID = setInterval(function () {
-
     var itemsLength = 50;
       spotifyApi.getMySavedTracks({
         limit : 50,
