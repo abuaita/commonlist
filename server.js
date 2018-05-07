@@ -73,7 +73,7 @@ app.post('/new_profile', function(request, response){
   console.log('-- Request received:', request.method, request.url);
   //TODO - verify user input and sanitize
 
-  session.saveUser(request, response);
+  session.saveUser(request, response, logIn);
 
 });
 //profile page
