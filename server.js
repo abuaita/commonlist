@@ -295,8 +295,13 @@ app.get('/styles.css', function(request, response){
 
 app.get('/spotify_export', function(request, response){
   console.log('-- Request received: export playlist');
-  exportPlaylist(search_user_global);
-  response.render('./profile.html', {"root": __dirname, "User":userID, "Message":"Playlist successfully exported! Check spotify."});
+  let res = exportPlaylist(search_user_global);
+
+  if (res===0){
+    response.render('./postexport.html', {"root": __dirname, "User":userID, "Message":"Playlist successfully exported! Check spotify."});
+  } else {
+    response.render('./postexport.html', {"root": __dirname, "User":userID, "Message":"There was an error exporting. You might need to re-authorize Commonlist's access to Spotify by re-importing your music tastes."});
+  }
 });
 
 
@@ -304,41 +309,85 @@ function exportPlaylist(id) {
 
   //SAMPLE PLAYLIST FROM USER SEARCHED FOR
 
-  var toExport = [];
-  console.log(id);
+  var toExportUser1 = [];
+  var toExportUser2 = [];
+
   var query = db.User.findOne({username: id}, function(err, obj) {
     if (obj === null) {
       console.log("Could not find user");
-      return;
+      return 1;
     } else {
-      //for (let track_id in obj.trackInfo) {
-      //  console.log(track_id);
-      //  console.log(track_id.id);
-        //return;
-      //}
       for(let i=0; i<obj.trackInfo.length; i++){
-        toExport.push('spotify:track:' + obj.trackInfo[i].id);
+        toExportUser1.push('spotify:track:' + obj.trackInfo[i].id);
       }
-      console.log(toExport);
     }
-    //return;
+
+  var query2 = db.User.findOne({username: userID}, function(err, obj) {
+    if (obj === null) {
+      console.log("Could not find user");
+      return 1;
+    } else {
+      for(let i=0; i<obj.trackInfo.length; i++){
+        toExportUser2.push('spotify:track:' + obj.trackInfo[i].id);
+      }
+    }
+
+
+  combinedPlaylist = mixMusicTastesAlgorithm(toExportUser1, toExportUser2);
 
   spotifyApi.createPlaylist(spotifyID, ('Commonlist Playlist ' + Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000), { 'public' : false })
   .then(function(data) {
-    spotifyApi.addTracksToPlaylist(spotifyID, data.body.id, toExport)
+    spotifyApi.addTracksToPlaylist(spotifyID, data.body.id, combinedPlaylist)
     .then(function(data) {
       console.log('Added tracks to playlist!');
+      return 0;
     }, function(err) {
       console.log('Something went wrong!', err);
+      return 1;
     });
   }, function(err) {
     console.log('Something went wrong!', err);
+    return 1;
   });
 
 });
 
-  return;
+}
 
+function mixMusicTastesAlgorithm(user1Music, user2Music){
+  combined = [];
+
+  songsInCommon = getSongsInCommon(user1Music, user2Music)
+
+  toGenerate = 50 - songsInCommon.length;
+
+  songsFromPrefAlgo = generateSongsInCommon(user1Music, user2Music, toGenerate);
+
+  combined = songsInCommon.concat(songsFromPrefAlgo); //should be 50 songs now (songs in common + from pref algo)
+
+  return combined;
+
+}
+
+function generateSongsInCommon(user1Music, user2Music, numberToGen){
+  //TODO using Matt's algorithm: https://docs.google.com/document/d/1ISwg8G6iC-S01ga0BEv9PeduSrMQsPs8OXbtxAS-wCs/edit
+
+  
+}
+
+
+function getSongsInCommon(user1Music, user2Music){
+  combined = [];
+
+  for(int i=0; i<user1Music.length; i++){
+    for(int j=0; j<user2Music.length; j++){
+      if(user1Music[i] == user2Music[j]){
+        combined.push(user1Music[i]);
+      }
+    }
+  }
+
+  return combined;
 }
 
 
