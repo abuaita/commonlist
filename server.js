@@ -25,7 +25,7 @@ var userID = '';
 var spotifyID = '';
 var global_access_token = '';
 var search_user_global = '';
-
+const PORT = process.env.PORT || 8080;
 //to get GET/POST requests
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
@@ -546,8 +546,8 @@ function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs
     });
 
 
-    app.listen(8080, function(){
-      console.log('-- Server listening on port 8080');
+    app.listen(PORT, function(){
+      console.log('-- Server listening on port '+ PORT);
     });
 
     function getUserPlaylists(id, callback) {
