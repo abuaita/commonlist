@@ -211,3 +211,12 @@ input {
 #export button {
   margin: 10px;
 }
+
+.export {
+  width: 427px;
+  margin: 20px;
+}
+
+#export_pics {
+  display: inline-flex;
+}

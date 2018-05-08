@@ -5,6 +5,7 @@
   <title>Commonlist Profile </title>
   <link rel="stylesheet" href="https://use.typekit.net/jjf2cbe.css">
   <link rel="stylesheet" href="styles.css" />
+  <script src="/broken_image.js"></script>
 </head>
 <body>
   <div class="container">
@@ -12,9 +13,14 @@
     <div id="login_link"><h2><a href="/profile">@{{User}}</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="/logout">Log out</a></h2></div>
     <div id="title"><a href="/"><img src="./assorted/commonlist4pt.png" alt="logo"/></a></div>
     <div id="export"><h2>{{Message}}{{Friend}}</h2>
-
-      <div id="user_pics">
-      <div class="albumContainer">
+      <form method="GET" action="/spotify_export">
+        <button class="spotify" type="submit"> Export to Spotify <img src="./assorted/logo_assets/spotify-logo-white.png"/></button>
+      </form>
+      <form method="GET" action="/profile">
+        <button type="submit"> Go back to your profile </button>
+      </form>
+      <div id="export_pics">
+      <div class="albumContainer export">
         <ul>
           {{#albumCoversSearchedUser}}
           <li><img src={{.}}></li>
@@ -22,7 +28,7 @@
         </ul>
       </div>
 
-      <div class="albumContainer">
+      <div class="albumContainer export">
         <ul>
           {{#albumCoversCurrUser}}
           <li><img src={{.}}></li>
@@ -31,13 +37,6 @@
       </div>
 
     </div>
-
-      <form method="GET" action="/spotify_export">
-        <button class="spotify" type="submit"> Export to Spotify <img src="./assorted/logo_assets/spotify-logo-white.png"/></button>
-      </form>
-      <form method="GET" action="/profile">
-        <button type="submit"> Go back to your profile </button>
-      </form>
 
     </div>
   </div>
