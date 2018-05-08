@@ -7,17 +7,18 @@
 </head>
 <body>
   <div class="container">
-
-    <div id="login_link"><h2><a href="/logout">Logout</a> &nbsp;&nbsp;&nbsp;&nbsp; </h2></div>
-    <div id="title"><img src="./assorted/commonlist4pt.png" alt="logo" /></div>
-    <div id="welcome"><h2>{{Message}}{{User}}</h2> <br><br>
+    <div id="login_link"><h2><a href="/profile">@{{User}}</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="/logout">Log out</a></h2></div>
+    <div id="title"><a href="/"><img src="./assorted/commonlist4pt.png" alt="logo"/></a></div>
+    <div id="export"><h2>{{Message}}{{Friend}}</h2>
+      <form method="GET" action="/spotify_export">
+        <button class="spotify" type="submit"> Export to Spotify <img src="./assorted/logo_assets/spotify-logo-white.png"/></button>
+      </form>
+      <form method="GET" action="/profile">
+        <button type="submit"> Go back to your profile.</button>
+      </form>
       <div id="tracks">{{Tracks}}</div><br><br>
-      <a href="/spotify_export" class="btn-spotify">Export to Spotify</a><br><br>
-      <a href="/profile">Go back to your profile</a>
     </div>
   </div>
-
-
   <div id="swirly"><img src="./assorted/album-sine-wave.jpg" id="swirly_image" alt="bottom banner" /></div>
 </body>
 </html>
