@@ -239,7 +239,7 @@ app.get('/callback', function(request, response){
 
 app.get('/import', function(request, response){
   console.log('-- Request received:');
-  response.render('./import.html', {"root": __dirname, "import_button":"Import Playlists"});
+  response.render('./import.html', {"root": __dirname, "User":userID, "import_button":"Import Playlists"});
 });
 
 app.get('/import_playlists', function(request, response){
