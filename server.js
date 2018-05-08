@@ -252,7 +252,7 @@ app.get('/callback', function(request, response){
 
 app.get('/import', function(request, response){
   console.log('-- Request received:');
-  response.render('./import.html', {"root": __dirname, "import_button":"Import Playlists"});
+  response.render('./import.html', {"root": __dirname, "User":userID, "import_button":"Import Playlists"});
 });
 
 app.get('/import_playlists', function(request, response){
@@ -347,13 +347,13 @@ app.get('/search', function(request, response){
     console.log(vals)
     if (vals === false) { // if vals is false, the user was not found
       console.log("CAN'T FIND USER");
-      response.render('./export.html', {"root": __dirname, "User":userID, "Message":"Search Failed"}); // why was err returned as tracks?
+      response.render('./export.html', {"root": __dirname, "User":userID, "Friend":search_user, "Message":"Search Failed"}); // why was err returned as tracks?
     }
     else {
       console.log("FOUND USER");
       response.render('./export.html', {"root": __dirname,
       "Message":"Search Success! Combining your music tastes with user ",
-      "User":search_user, "Tracks":vals});
+      "User":userID, "Friend":search_user, "Tracks":vals});
       search_user_global = search_user;
     }
   });

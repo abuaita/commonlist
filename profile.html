@@ -20,21 +20,20 @@
       </form>
 
       <h2>After you've logged in, search to find a friend and combine your music tastes!</h2>
-      <br><br>
       {{Message}}
       <form action="/find_friend" method="GET">
         <button type="submit"> Make a Commonlist &#8594; </button>
       </form>
     </div>
-  </div>
-  <div id="user_pics">
-    <img class="user_image" src="{{image}}"/>
-    <div class="albumContainer">
-      <ul>
-        {{#albumCovers}}
-        <li><img src={{.}}></li>
-        {{/albumCovers}}
-      </ul>
+    <div id="user_pics">
+      <img class="user_image" src="{{image}}"/>
+      <div class="albumContainer">
+        <ul>
+          {{#albumCovers}}
+          <li><img src={{.}}></li>
+          {{/albumCovers}}
+        </ul>
+      </div>
     </div>
   </div>
   <div id="swirly"><img src="./assorted/album-sine-wave.jpg" id="swirly_image" alt="bottom banner" /></div>
