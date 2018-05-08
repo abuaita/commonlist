@@ -1,4 +1,5 @@
 // mongoDB stuff
+// SOURCE CITED:
 // https://thinkster.io/tutorials/node-json-api/creating-the-user-model
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');

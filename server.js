@@ -498,8 +498,7 @@ function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs
 
         //NOW CREATE PLAYLIST:
 
-        spotifyApi.createPlaylist(spotifyID, ('Commonlist Playlist ' + Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000), { 'public' : false })
-        .then(function(data) {
+ spotifyApi.createPlaylist(spotifyID, ('Commonlist: ' + user1 + ' & ' + user2 + ' #' + Math.floor(Math.random() * (100 - 30 + 1)) + 30), { 'public' : false })        .then(function(data) {
           spotifyApi.addTracksToPlaylist(spotifyID, data.body.id, combined)
           .then(function(data) {
             console.log('Added tracks to playlist!');
@@ -533,7 +532,7 @@ function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs
 
       let toGenerate = 50 - combined.length
 
-      return generateSongsInCommon(user1Music, user2Music, toGenerate, listofAllIDs, combined);
+      return generateSongsInCommon(user1Music, user2Music, toGenerate, listofAllIDs, combined, id, userID);
     }
 
     //404!
