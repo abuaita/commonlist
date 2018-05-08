@@ -7,12 +7,18 @@
 </head>
 <body>
   <div class="container">
-
-    <div id="title"><a href="/"><img src="./assorted/commonlist4pt.png" alt="logo" /></a></div>
-<br>
-        <h2>Thanks for logging in! If it's your first time, import your music tastes by clicking <a href="/import_playlists">this link.</a> <br><br>If it's not your first time, <a href="/profile">return to your profile</a> and search for a friend! </h2><br>
-
-
+    <div id="login_link"><h2><a href="/profile">@{{User}}</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="/logout">Log out</a></h2></div>
+    <div id="title"><a href="/"><img src="./assorted/commonlist4pt.png" alt="logo"/></a></div>
+    <h3>Thanks for logging in! If it's your first time, import your music tastes by clicking below. </h3>
+    <form method="GET" action="/import_playlists">
+      <button class="spotify" type="submit"> Import Playlists <img src="./assorted/logo_assets/spotify-logo-white.png"/></button>
+    </form>
+    <br>
+    <h3>If it's not your first time, return to your profile! </h3>
+    <br>
+    <form method="GET" action="/profile">
+      <button type="submit"> Return to profile. </button>
+    </form>
   </div>
   <div id="swirly"><img src="./assorted/album-sine-wave.jpg" id="swirly_image" alt="bottom banner" /></div>
 

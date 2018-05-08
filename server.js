@@ -207,7 +207,6 @@ app.get('/callback', function(request, response){
       },
       json: true
     };
-
     request_library.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
 
@@ -233,10 +232,7 @@ app.get('/callback', function(request, response){
       }
     });
   }
-
   response.redirect('/import');
-
-
 });
 
 app.get('/import', function(request, response){
@@ -518,7 +514,6 @@ function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs
 
   }
 
-
   function getSongsInCommon(user1Music, user2Music, listofAllIDs, id, userID){
     combined = [];
 
@@ -529,7 +524,6 @@ function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs
         }
       }
     }
-
       let toGenerate = 50 - combined.length
 
       return generateSongsInCommon(user1Music, user2Music, toGenerate, listofAllIDs, combined, id, userID);
