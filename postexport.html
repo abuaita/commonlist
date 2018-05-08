@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Commonlist Profile </title>
+  <link rel="stylesheet" href="https://use.typekit.net/jjf2cbe.css">
   <link rel="stylesheet" href="styles.css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 </head>
@@ -10,13 +11,12 @@
   <div class="container">
     <div id="login_link"><h2><a href="/profile">@{{User}}</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="/logout">Log out</a></h2></div>
     <div id="title"><a href="/"><img src="./assorted/commonlist4pt.png" alt="logo"/></a></div>
-
       <h1>{{Message}}<br></h1>
       <br>
-      <h2><a href="/profile">Go back to your profile?</a></h2>
-
+      <form method="GET" action="/profile">
+        <button type="submit"> Go back to your profile </button>
+      </form>
     </div>
-
     <div id="swirly"><img src="./assorted/album-sine-wave.jpg" id="swirly_image" alt="bottom banner" /></div>
 
   </body>
