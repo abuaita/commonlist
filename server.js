@@ -77,11 +77,12 @@ app.post('/returning_profile', function(request, response){
   //TODO - access their data + validate w/ database
   session.authenticateUser(request, response, logIn, toProfile);
 });
+
 function logIn(id) {
   loggedIn = true;
   userID = id;
 }
-function createAlbumArt(doc) {
+function createAlbumArt(doc, callback, response, username, vals, commonlist) {
   let tracks = doc.trackInfo;
   let links = [];
   for (let z = 0; z < tracks.length; z++) {
@@ -89,18 +90,24 @@ function createAlbumArt(doc) {
       links.push(tracks[z].albumcover);
     }
   }
-  return links;
+  callback(doc, links, response, username, vals, commonlist);
 }
 function toProfile(response, username) {
   db.User.findOne({"username": username}, function(err, doc){
     if(err){
       console.error(err);
     } else {
-      let links = createAlbumArt(doc);
-      response.render('./profile.html', {"root": __dirname, "User":username, "image":doc.image, "albumCovers":links });
+      createAlbumArt(doc, renderProfile, response, username);
     }
   });
 }
+function renderExport(doc, links, response, username, vals, commonlist) {
+  response.render('./export.html', {"root": __dirname, "Message":"Search Success! Combining your music tastes with the library of user ", "User":userID, "Friend":search_user_global, "albumCoversSearchedUser":commonlist, "albumCoversCurrUser":links, "Tracks":vals});
+}
+function renderProfile(doc, links, response, username) {
+  response.render('./profile.html', {"root": __dirname, "User":username, "image":doc.image, "albumCovers":links });
+}
+
 //already logged in/access profile page directly: go back to profile page or tell them not authorized:
 app.get('/profile', function(request, response){
   console.log(loggedIn + " wooooot");
@@ -169,8 +176,8 @@ app.get('/make_commonlist', function(request, response) {
               if(err){
                 console.error(err);
                 } else {
-                  let links = createAlbumArt(doc);
-                  response.render('./export.html', {"root": __dirname, "Message":"Search Success! Combining your music tastes with the library of user ", "User":userID, "Friend":search_user_global, "albumCoversSearchedUser":commonlist, "albumCoversCurrUser":links, "Tracks":vals});
+                  createAlbumArt(doc, renderExport, response, userID, vals, commonlist)
+                //  response.render('./export.html', {"root": __dirname, "Message":"Search Success! Combining your music tastes with the library of user ", "User":userID, "Friend":search_user_global, "albumCoversSearchedUser":commonlist, "albumCoversCurrUser":links, "Tracks":vals});
                 }
 
             });
