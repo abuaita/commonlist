@@ -377,7 +377,7 @@ app.get('/spotify_export', function(request, response){
   // response.render('./export.html', {"root": __dirname, "Message":"Playlist successfully exported! Check spotify.", "User":userID});
 
   if (res===0){
-    response.render('./postexport.html', {"root": __dirname, "User":userID, "Message":"Playlist successfully exported! Check spotify."});
+    response.render('./postexport.html', {"root": __dirname, "User":userID, "Message":"Playlist successfully exported! Check Spotify."});
   } else {
     response.render('./postexport.html', {"root": __dirname, "User":userID, "Message":"There was an error exporting to Spotify. You might need to re-authorize Commonlist's access to Spotify by re-importing your music tastes."});
   }
