@@ -85,7 +85,9 @@ function createAlbumArt(doc) {
   let tracks = doc.trackInfo;
   let links = [];
   for (let z = 0; z < tracks.length; z++) {
-    links.push(tracks[z].albumcover);
+    if(!links.includes(tracks[z].albumcover)){
+      links.push(tracks[z].albumcover);
+    }
   }
   return links;
 }
@@ -518,7 +520,7 @@ function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs
 
     for(let i=0; i<user1Music.length; i++){
       for(let j=0; j<user2Music.length; j++){
-        if(user1Music[i] == user2Music[j]){
+        if(user1Music[i] == user2Music[j] && !combined.includes(user1Music[i])){
           combined.push(user1Music[i]);
         }
       }
