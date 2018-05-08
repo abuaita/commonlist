@@ -126,7 +126,6 @@ app.get('/look_up_user', function(request, response){
     db.User.findOne({username:search_user}, function(err, doc) {
       if (err) {
         console.error(err);
-<<<<<<< HEAD
         response.render('./find_friend.html', {"root": __dirname, "User":userID, 'display':'none', 'Message':'There was an error when searching for this user. Try Again?'});
       } else {
         if (doc === null) {
@@ -138,27 +137,6 @@ app.get('/look_up_user', function(request, response){
           'Message':'Is this the user you would like to connect with?', 'friend_image':doc.image, 'friend_username':search_user});
         }
       }
-=======
-      }
-      let tracks = doc.trackInfo;
-      let links = [];
-      console.log("REACHED 1");
-      for (let z = 0; z < tracks.length; z++) {
-        console.log("REACHED 2");
-        console.log(z);
-        links.push(tracks[z].albumcover);
-
-        if (z == tracks.length - 1) {
-          console.log(links);
-          response.render('./profile.html', {"root": __dirname, "User":userID, "albumCovers":links });
-        }
-      }
-
-      if (!tracks.length){
-        response.render('./profile.html', {"root": __dirname, "User":userID, "albumCovers":links });
-      }
-      console.log("REACHED 3");
->>>>>>> 1b61e01e42703349b69e25494497858f9a9a8616
     });
   } else {
     response.sendFile('./error.html', {"root": __dirname});
@@ -271,18 +249,18 @@ app.get('/import_playlists', function(request, response){
   console.log('-- Request received:');
   // saving the user's pro pic
   spotifyApi.getMe()
-    .then(function(data) {
-        let propic = data.body.images[0].url;
-        if (propic !== null) {
-          db.User.findOneAndUpdate({"username":userID} , {"image" : propic}, function(err, doc){
-            if(err){
-              console.error(err);
-            }
-          });
+  .then(function(data) {
+    let propic = data.body.images[0].url;
+    if (propic !== null) {
+      db.User.findOneAndUpdate({"username":userID} , {"image" : propic}, function(err, doc){
+        if(err){
+          console.error(err);
         }
-      }, function(err) {
-        console.error(err);
       });
+    }
+  }, function(err) {
+    console.error(err);
+  });
   // Get a user's playlists
   // spotifyApi.getUserPlaylists(spotifyID)
   // .then(function(data) {
@@ -291,94 +269,56 @@ app.get('/import_playlists', function(request, response){
   //   console.log('Something went wrong!', err);
   // });
 
-<<<<<<< HEAD
-  spotifyApi.getMySavedTracks({
-    limit : 50
-  })
-  .then(function(data) {
-    var songInfo = [];
-    for(let i = 0; i < data.body.items.length; i++){
-      // song.name = data.body.items[i].track.name;
-      spotifyApi.getAudioFeaturesForTrack(data.body.items[i].track.id)
-      .then(function(data1) {
-        var song = {};
-        song.albumcover = data.body.items[i].track.album.images[1].url;
-        song.album = data.body.items[i].track.album.name;
-        song.name = data.body.items[i].track.name;
-        song.artist = data.body.items[i].track.album.artists[0].name;
-        console.log(data.body.items[i].track.album.artists[0].name);
-        song.id =  data.body.items[i].track.id;
-        song.dance = data1.body.danceability;
-        song.loud = data1.body.loudness;
-        song.instrum = data1.body.instrumentalness;
-        songInfo.push(song);
-        if(songInfo.length===data.body.items.length - 1){
-          db.User.findOneAndUpdate({"username": userID}, {"$addToSet": { "trackInfo": { "$each": songInfo }}}, function(err, doc){
-            if(err){
-              console.error(err);
-            }
-            console.log(doc);
-          });
-          // { "$addToSet": { "trackInfo": { "$each": songInfo } }});
-          // console.log(JSON.stringify?)
-        }
-      }, function(err) {
-        console.error(err);
-      });
-    }
-=======
   var ct = 0;
   let os = 0;
   var intervalID = setInterval(function () {
     var itemsLength = 50;
-      spotifyApi.getMySavedTracks({
-        limit : 50,
-        offset: os
-      })
-      .then(function(data) {
-        os += 50;
-        var songInfo = [];
-        itemsLength =  data.body.items.length;
-        console.log("LENGTH " + itemsLength + " OFFSET " + os);
-        for(let i = 0; i < data.body.items.length; i++){
-          // song.name = data.body.items[i].track.name;
-     spotifyApi.getAudioFeaturesForTrack(data.body.items[i].track.id)
-     .then(function(data1) {
-            var song = {};
-            song.albumcover = data.body.items[i].track.album.images[1].url;
-            song.album = data.body.items[i].track.album.name;
-            song.name = data.body.items[i].track.name;
-            song.artist = data.body.items[i].track.album.artists[0].name;
-            song.id =  data.body.items[i].track.id;
-             song.dance = data1.body.danceability;
-             song.loud = data1.body.loudness;
-             song.instrum = data1.body.instrumentalness;
-             songInfo.push(song);
-             if(songInfo.length===data.body.items.length - 1){
-               db.User.findOneAndUpdate({"username": userID}, {"$addToSet": { "trackInfo": { "$each": songInfo }}}, function(err, doc){
-                 if(err){
-                   console.error(err);
-                 }
-                 console.log(doc);
-               });
-               // { "$addToSet": { "trackInfo": { "$each": songInfo } }});
-               // console.log(JSON.stringify?)
-             }
-          }, function(err) {
-           console.error(err);
-          });
-        }
+    spotifyApi.getMySavedTracks({
+      limit : 50,
+      offset: os
+    })
+    .then(function(data) {
+      os += 50;
+      var songInfo = [];
+      itemsLength =  data.body.items.length;
+      console.log("LENGTH " + itemsLength + " OFFSET " + os);
+      for(let i = 0; i < data.body.items.length; i++){
+        // song.name = data.body.items[i].track.name;
+        spotifyApi.getAudioFeaturesForTrack(data.body.items[i].track.id)
+        .then(function(data1) {
+          var song = {};
+          song.albumcover = data.body.items[i].track.album.images[1].url;
+          song.album = data.body.items[i].track.album.name;
+          song.name = data.body.items[i].track.name;
+          song.artist = data.body.items[i].track.album.artists[0].name;
+          song.id =  data.body.items[i].track.id;
+          song.dance = data1.body.danceability;
+          song.loud = data1.body.loudness;
+          song.instrum = data1.body.instrumentalness;
+          songInfo.push(song);
+          if(songInfo.length===data.body.items.length - 1){
+            db.User.findOneAndUpdate({"username": userID}, {"$addToSet": { "trackInfo": { "$each": songInfo }}}, function(err, doc){
+              if(err){
+                console.error(err);
+              }
+              console.log(doc);
+            });
+            // { "$addToSet": { "trackInfo": { "$each": songInfo } }});
+            // console.log(JSON.stringify?)
+          }
+        }, function(err) {
+          console.error(err);
+        });
+      }
 
-      }, function(err) {
-        console.log('Something went wrong!', err);
-      });
-      if (++ct === 10) {
-        console.log("STOPPED at " + ct);
-       clearInterval(intervalID);
-   }
-}, 10000);
->>>>>>> 1b61e01e42703349b69e25494497858f9a9a8616
-
+    }, function(err) {
+      console.log('Something went wrong!', err);
+    });
+    if (++ct === 10) {
+      console.log("STOPPED at " + ct);
+      clearInterval(intervalID);
+    }
+  }, 10000);
 
   //TODO: GET SONGS FROM PLAYLISTS : spotifyApi.getPlaylistTracks()
 
@@ -473,42 +413,27 @@ function exportPlaylist(id) {
           listofAllIDs.push(obj.trackInfo[i].id);
         }
       }
-<<<<<<< HEAD
-=======
-    }
 
-  //console.log(toExportUser1, toExportUser2, listofAllIDs);
+      //console.log(toExportUser1, toExportUser2, listofAllIDs);
 
 
-  combinedPlaylist = mixMusicTastesAlgorithm(toExportUser1, toExportUser2, listofAllIDs, id, userID);
+      combinedPlaylist = mixMusicTastesAlgorithm(toExportUser1, toExportUser2, listofAllIDs, id, userID);
 
 
-   });
->>>>>>> 1b61e01e42703349b69e25494497858f9a9a8616
-
-      combinedPlaylist = mixMusicTastesAlgorithm(toExportUser1, toExportUser2, listofAllIDs);
     });
+
+
   });
   return 0;
 }
 
-<<<<<<< HEAD
-function mixMusicTastesAlgorithm(user1Music, user2Music, listofAllIDs){
-=======
-
-
 function mixMusicTastesAlgorithm(user1Music, user2Music, listofAllIDs, id, userID){
->>>>>>> 1b61e01e42703349b69e25494497858f9a9a8616
 
   getSongsInCommon(user1Music, user2Music, listofAllIDs, id, userID); //finishes then calls generateSongsincommon
 
 }
 
-<<<<<<< HEAD
-function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs, songsInCommon) {
-=======
 function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs, songsInCommon, user1, user2){
->>>>>>> 1b61e01e42703349b69e25494497858f9a9a8616
   //TODO using Matt's algorithm: https://docs.google.com/document/d/1ISwg8G6iC-S01ga0BEv9PeduSrMQsPs8OXbtxAS-wCs/edit
   console.log("We are generating songs in common now");
 
@@ -519,134 +444,92 @@ function generateSongsInCommon(user1Music, user2Music, numberToGen, listofAllIDs
   var options = {
     url: 'https://api.spotify.com/v1/audio-features/?ids=',
     headers: { 'Authorization': 'Bearer ' + global_access_token },
-    json: true    };
+    json: true
+  };
 
-    for(let i=0; i<len; i++){
-      let cur = listofAllIDs[i] + ','
-      options.url += cur
+  for(let i=0; i<len; i++){
+    let cur = listofAllIDs[i] + ','
+    options.url += cur
+  }
+  // use the access token to access the Spotify API and get song data
+  //then get averages of danceability, energy, tempo, valence
+  request_library.get(options, function(error, response, body) {
+    let avg_danceability = 0, avg_energy = 0, avg_tempo = 0, avg_valence = 0;
+    for(let i=0; i<body.audio_features.length; i++){
+      avg_danceability += body.audio_features[i].danceability;
+      avg_energy += body.audio_features[i].energy;
+      avg_tempo += body.audio_features[i].tempo;
+      avg_valence += body.audio_features[i].valence;
     }
-    // use the access token to access the Spotify API and get song data
-    //then get averages of danceability, energy, tempo, valence
-    request_library.get(options, function(error, response, body) {
-      let avg_danceability = 0, avg_energy = 0, avg_tempo = 0, avg_valence = 0;
-      for(let i=0; i<body.audio_features.length; i++){
-        avg_danceability += body.audio_features[i].danceability;
-        avg_energy += body.audio_features[i].energy;
-        avg_tempo += body.audio_features[i].tempo;
-        avg_valence += body.audio_features[i].valence;
-      }
-<<<<<<< HEAD
-      avg_danceability = avg_danceability/(body.audio_features.length)
-      avg_energy = avg_energy/(body.audio_features.length)
-      avg_tempo = avg_tempo/(body.audio_features.length)
-      avg_valence = avg_valence/(body.audio_features.length)
+    avg_danceability = avg_danceability/(body.audio_features.length)
+    avg_energy = avg_energy/(body.audio_features.length)
+    avg_tempo = avg_tempo/(body.audio_features.length)
+    avg_valence = avg_valence/(body.audio_features.length)
 
-      //now pick a few random songs as SEED VALUES
-      songid1 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
-      songid2 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
-      songid3 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
-      songid4 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
-      songid5 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
+    //now pick a few random songs as SEED VALUES
+    songid1 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
+    songid2 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
+    songid3 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
+    songid4 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
+    songid5 = listofAllIDs[Math.floor(Math.random()*listofAllIDs.length)]
 
 
-      var rec_options = {
-        url: 'https://api.spotify.com/v1/recommendations?',
-        headers: { 'Authorization': 'Bearer ' + global_access_token },
-        json: true    };
+    var rec_options = {
+      url: 'https://api.spotify.com/v1/recommendations?',
+      headers: { 'Authorization': 'Bearer ' + global_access_token },
+      json: true    };
 
-        rec_options.url += 'seed_tracks=' + songid1 + ',' + songid2 + ',' + songid3 + ',' +songid4 + ',' +songid5;
-        rec_options.url += '&min_popularity=50&market=US';
-        rec_options.url += '&target_energy=' + avg_energy;
-        rec_options.url += '&target_valence=' + avg_valence;
-        rec_options.url += '&target_tempo=' + avg_tempo;
-        rec_options.url += '&target_danceability=' + avg_danceability;
-        rec_options.url += '&limit=' + numberToGen;
+      rec_options.url += 'seed_tracks=' + songid1 + ',' + songid2 + ',' + songid3 + ',' +songid4 + ',' +songid5;
+      rec_options.url += '&min_popularity=50&market=US';
+      rec_options.url += '&target_energy=' + avg_energy;
+      rec_options.url += '&target_valence=' + avg_valence;
+      rec_options.url += '&target_tempo=' + avg_tempo;
+      rec_options.url += '&target_danceability=' + avg_danceability;
+      rec_options.url += '&limit=' + numberToGen;
 
-        request_library.get(rec_options, function(error, response, body) {
-          generatedIDs = []
-          for(let h=0; h<body.tracks.length; h++){
-            generatedIDs.push('spotify:track:' + body.tracks[h].id);
-          }
-
-          combined = songsInCommon.concat(generatedIDs); //should be 50 songs now (songs in common + from pref algo)
-          console.log("combined: " +combined);
-
-          //NOW CREATE PLAYLIST:
-
-          spotifyApi.createPlaylist(spotifyID, ('Commonlist Playlist ' + Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000), { 'public' : false })
-          .then(function(data) {
-            spotifyApi.addTracksToPlaylist(spotifyID, data.body.id, combined)
-            .then(function(data) {
-              console.log('Added tracks to playlist!');
-              return 0;
-            }, function(err) {
-              console.log('Something went wrong!', err);
-              return 1;
-            });
-          }, function(err) {
-            console.log('Something went wrong!', err);
-          });
-=======
+      request_library.get(rec_options, function(error, response, body) {
+        generatedIDs = []
+        for(let h=0; h<body.tracks.length; h++){
+          generatedIDs.push('spotify:track:' + body.tracks[h].id);
+        }
 
         combined = songsInCommon.concat(generatedIDs); //should be 50 songs now (songs in common + from pref algo)
         console.log("combined: " +combined);
 
         //NOW CREATE PLAYLIST:
 
-      spotifyApi.createPlaylist(spotifyID, ('Commonlist: ' + user1 + ' & ' + user2 + ' #' + Math.floor(Math.random() * (100 - 30 + 1)) + 30), { 'public' : false })
-      .then(function(data) {
-        spotifyApi.addTracksToPlaylist(spotifyID, data.body.id, combined)
+        spotifyApi.createPlaylist(spotifyID, ('Commonlist Playlist ' + Math.floor(Math.random() * (10000 - 3000 + 1)) + 3000), { 'public' : false })
         .then(function(data) {
-          console.log('Added tracks to playlist!');
-          return 0;
+          spotifyApi.addTracksToPlaylist(spotifyID, data.body.id, combined)
+          .then(function(data) {
+            console.log('Added tracks to playlist!');
+            return 0;
+          }, function(err) {
+            console.log('Something went wrong!', err);
+            return 1;
+          });
         }, function(err) {
           console.log('Something went wrong!', err);
-          return 1;
->>>>>>> 1b61e01e42703349b69e25494497858f9a9a8616
         });
-      });
-<<<<<<< HEAD
-=======
+        //NOW CREATE PLAYLIST:
 
+      });
 
     });
 
-
-  });
-
+  }
 
 
+  function getSongsInCommon(user1Music, user2Music, listofAllIDs, id, userID){
+    combined = [];
 
-
-}
-
-
-function getSongsInCommon(user1Music, user2Music, listofAllIDs, id, userID){
-  combined = [];
-
-  for(let i=0; i<user1Music.length; i++){
-    for(let j=0; j<user2Music.length; j++){
-      if(user1Music[i] == user2Music[j]){
-        combined.push(user1Music[i]);
-      }
->>>>>>> 1b61e01e42703349b69e25494497858f9a9a8616
-    }
-
-    function getSongsInCommon(user1Music, user2Music, listofAllIDs){
-      combined = [];
-
-<<<<<<< HEAD
-      for(let i=0; i<user1Music.length; i++){
-        for(let j=0; j<user2Music.length; j++){
-          if(user1Music[i] == user2Music[j]){
-            combined.push(user1Music[i]);
-          }
+    for(let i=0; i<user1Music.length; i++){
+      for(let j=0; j<user2Music.length; j++){
+        if(user1Music[i] == user2Music[j]){
+          combined.push(user1Music[i]);
         }
       }
-=======
-  return generateSongsInCommon(user1Music, user2Music, toGenerate, listofAllIDs, combined, id, userID);
-}
->>>>>>> 1b61e01e42703349b69e25494497858f9a9a8616
+    }
 
       let toGenerate = 50 - combined.length
 
