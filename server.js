@@ -13,7 +13,7 @@ var db = require('./database.js');
 var SpotifyWebApi = require('spotify-web-api-node');
 var clientID = '58ac68b2b95c4c55957c2a54c8f1ed90';
 var clientSecret = '660a8dd1ead9413a933d2e82924ef5b4';
-var redirectUri = 'http://localhost:8080/callback';
+var redirectUri = 'https://commonlist.herokuapp.com/callback';
 var spotifyApi = new SpotifyWebApi({
   clientId : clientID,
   clientSecret : clientSecret,
