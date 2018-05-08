@@ -315,7 +315,6 @@ app.get('/import_playlists', function(request, response){
     }
   }, 10000);
 
-  //TODO: GET SONGS FROM PLAYLISTS : spotifyApi.getPlaylistTracks()
 
   //TODO : STORE PLAYLIST DATA / SONG DATA IN DATABASE
   response.render('./import.html', {"root": __dirname, "User":userID, "import_button":"Success!"});
