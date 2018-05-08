@@ -170,7 +170,7 @@ app.get('/make_commonlist', function(request, response) {
                 console.error(err);
                 } else {
                   let links = createAlbumArt(doc);
-                  response.render('./export.html', {"root": __dirname, "Message":"Search Success! Combining your music tastes with the library of user ", "User":userID, "friend_username":search_user_global, "albumCoversSearchedUser":commonlist, "albumCoversCurrUser":links, "Tracks":vals});
+                  response.render('./export.html', {"root": __dirname, "Message":"Search Success! Combining your music tastes with the library of user ", "User":userID, "Friend":search_user_global, "albumCoversSearchedUser":commonlist, "albumCoversCurrUser":links, "Tracks":vals});
                 }
 
             });

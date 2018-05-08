@@ -12,13 +12,33 @@
     <div id="login_link"><h2><a href="/profile">@{{User}}</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="/logout">Log out</a></h2></div>
     <div id="title"><a href="/"><img src="./assorted/commonlist4pt.png" alt="logo"/></a></div>
     <div id="export"><h2>{{Message}}{{Friend}}</h2>
+
+      <div id="user_pics">
+      <div class="albumContainer">
+        <ul>
+          {{#albumCoversSearchedUser}}
+          <li><img src={{.}}></li>
+          {{/albumCoversSearchedUser}}
+        </ul>
+      </div>
+
+      <div class="albumContainer">
+        <ul>
+          {{#albumCoversCurrUser}}
+          <li><img src={{.}}></li>
+          {{/albumCoversCurrUser}}
+        </ul>
+      </div>
+
+    </div>
+
       <form method="GET" action="/spotify_export">
         <button class="spotify" type="submit"> Export to Spotify <img src="./assorted/logo_assets/spotify-logo-white.png"/></button>
       </form>
       <form method="GET" action="/profile">
         <button type="submit"> Go back to your profile </button>
       </form>
-      <div id="tracks">{{Tracks}}</div><br><br>
+
     </div>
   </div>
   <div id="swirly"><img src="./assorted/album-sine-wave.jpg" id="swirly_image" alt="bottom banner" /></div>
