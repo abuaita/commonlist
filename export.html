@@ -10,8 +10,17 @@
 
     <div id="login_link"><h2><a href="/logout">Logout</a> &nbsp;&nbsp;&nbsp;&nbsp; </h2></div>
     <div id="title"><img src="./assorted/commonlist4pt.png" alt="logo" /></div>
-    <div id="welcome"><h2>{{Message}}{{User}}</h2> <br><br>
-      <div id="tracks">{{Tracks}}</div><br><br>
+    <div id="welcome"><h2>{{Message}}{{friend_username}}</h2> <br><br>
+      <div id="user_pics">
+    <img class="user_image" src="{{image}}"/>
+    <div class="albumContainer">
+      <ul>
+        {{#albumCovers}}
+        <li><img src={{.}}></li>
+        {{/albumCovers}}
+      </ul>
+    </div>
+
       <a href="/spotify_export" class="btn-spotify">Export to Spotify</a><br><br>
       <a href="/profile">Go back to your profile</a>
 

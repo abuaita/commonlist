@@ -156,15 +156,28 @@ app.get('/make_commonlist', function(request, response) {
       }
       else {
         console.log("FOUND USER");
-        console.log(vals);
+        //console.log(vals);
 
-        let commonlist = [];
-        for (let i = 0; i < vals.length; i++) {
-          console.log(vals[i].albumcover);
-          commonlist.push(vals[i].albumcover);
+            let commonlist = [];
+
+            for (let i = 0; i < vals.length; i++) {
+              if(!commonlist.includes(vals[i].albumcover)){
+                commonlist.push(vals[i].albumcover);
+              }
+            }
+
+            db.User.findOne({"username": username}, function(err, doc){
+              if(err){
+                console.error(err);
+                } else {
+                  let links = createAlbumArt(doc);
+                }
+
+            response.render('./export.html', {"root": __dirname, "Message":"Search Success! Combining your music tastes with the library of user ", "User":userID, "friend_username":search_user_global, "albumCoversSearchedUser":commonlist, "albumCoversCurrUser":links, "Tracks":vals});
+
+            });
         }
-        response.render('./export.html', {"root": __dirname, "Message":"Search Success! Combining your music tastes with user ", "User":userID, "friend_username":search_user_global, "Tracks":vals});
-        // search_user_global = search_user;
+
       }
     });
   } else {
