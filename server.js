@@ -237,8 +237,7 @@ app.get('/callback', function(request, response){
 
 app.get('/import', function(request, response){
   console.log('-- Request received:');
-
-  response.render('./import.html', {"root": __dirname});
+  response.render('./import.html', {"root": __dirname, "import_button":"Import Playlists"});
 });
 
 app.get('/import_playlists', function(request, response){
@@ -319,8 +318,9 @@ app.get('/import_playlists', function(request, response){
   //TODO: GET SONGS FROM PLAYLISTS : spotifyApi.getPlaylistTracks()
 
   //TODO : STORE PLAYLIST DATA / SONG DATA IN DATABASE
+  response.render('./import.html', {"root": __dirname, "User":userID, "import_button":"Success!"});
 
-  response.render('./profile.html', {"root": __dirname, "User":userID, "Message":"Import success! Now search to find your friend's songs and combine your music tastes."});
+  //response.render('./profile.html', {"root": __dirname, "User":userID, "Message":"Import success! Now search to find your friend's songs and combine your music tastes."});
 
 });
 
@@ -333,7 +333,7 @@ app.get('/search', function(request, response){
     console.log(vals)
     if (vals === false) { // if vals is false, the user was not found
       console.log("CAN'T FIND USER");
-      response.render('./export.html', {"root": __dirname, "Message":"Search Failed"}); // why was err returned as tracks?
+      response.render('./export.html', {"root": __dirname, "User":userID, "Message":"Search Failed"}); // why was err returned as tracks?
     }
     else {
       console.log("FOUND USER");
