@@ -153,8 +153,7 @@ app.get('/make_commonlist', function(request, response) {
       if (vals === false) { // if vals is false, the user was not found
         console.log("CAN'T FIND USER");
         response.render('./export.html', {"root": __dirname, "Message":"Search Failed."}); // why was err returned as tracks?
-      }
-      else {
+      } else {
         console.log("FOUND USER");
         //console.log(vals);
 
@@ -166,20 +165,17 @@ app.get('/make_commonlist', function(request, response) {
               }
             }
 
-            db.User.findOne({"username": username}, function(err, doc){
+            db.User.findOne({"username": userID}, function(err, doc){
               if(err){
                 console.error(err);
                 } else {
                   let links = createAlbumArt(doc);
+                  response.render('./export.html', {"root": __dirname, "Message":"Search Success! Combining your music tastes with the library of user ", "User":userID, "friend_username":search_user_global, "albumCoversSearchedUser":commonlist, "albumCoversCurrUser":links, "Tracks":vals});
                 }
-
-            response.render('./export.html', {"root": __dirname, "Message":"Search Success! Combining your music tastes with the library of user ", "User":userID, "friend_username":search_user_global, "albumCoversSearchedUser":commonlist, "albumCoversCurrUser":links, "Tracks":vals});
 
             });
         }
-
-      }
-    });
+      });
   } else {
     response.sendFile('./error.html', {"root": __dirname});
   }
