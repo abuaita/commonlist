@@ -316,11 +316,9 @@ app.get('/import_playlists', function(request, response){
     }
   }, 10000);
 
-  //TODO: GET SONGS FROM PLAYLISTS : spotifyApi.getPlaylistTracks()
 
-  //TODO : STORE PLAYLIST DATA / SONG DATA IN DATABASE
+  toProfile(response, userID);
 
-  response.render('./profile.html', {"root": __dirname, "User":userID, "Message":"Import success! Now search to find your friend's songs and combine your music tastes."});
 
 });
 
